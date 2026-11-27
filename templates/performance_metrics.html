@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2 style="margin-bottom: 24px;">Performance Metrics</h2>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
+    <div class="card">
+        <h3>InsightFace Performance</h3>
+        <div style="height: 300px;">
+            <canvas id="insightFaceChart"></canvas>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h3>YOLOv8 Performance</h3>
+        <div style="height: 300px;">
+            <canvas id="yoloChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 30px;">
+    <h3>Key Metrics Table</h3>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+        <thead>
+            <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                <th style="padding: 12px;">Model</th>
+                <th style="padding: 12px;">Precision</th>
+                <th style="padding: 12px;">Recall</th>
+                <th style="padding: 12px;">F1-Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 12px;">InsightFace</td>
+                <td style="padding: 12px;">{{ metrics.insightface_precision }}%</td>
+                <td style="padding: 12px;">{{ metrics.insightface_recall }}%</td>
+                <td style="padding: 12px;">{{ metrics.insightface_f1 }}%</td>
+            </tr>
+            <tr>
+                <td style="padding: 12px;">YOLOv8</td>
+                <td style="padding: 12px;">{{ metrics.yolov8_precision }}%</td>
+                <td style="padding: 12px;">{{ metrics.yolov8_recall }}%</td>
+                <td style="padding: 12px;">97.46% (Est.)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const insightCtx = document.getElementById('insightFaceChart').getContext('2d');
+    new Chart(insightCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Precision', 'Recall', 'F1-Score'],
+            datasets: [{
+                label: 'InsightFace %',
+                data: [{{ metrics.insightface_precision }}, {{ metrics.insightface_recall }}, {{ metrics.insightface_f1 }}],
+                backgroundColor: ['#22c55e', '#3b82f6', '#b400ff'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: true, max: 105 }
+            }
+        }
+    });
+
+    const yoloCtx = document.getElementById('yoloChart').getContext('2d');
+    new Chart(yoloCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Precision', 'Recall'],
+            datasets: [{
+                data: [{{ metrics.yolov8_precision }}, {{ metrics.yolov8_recall }}],
+                backgroundColor: ['#22c55e', '#f59e0b'],
+                borderColor: '#1f2937'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+{% endblock %}

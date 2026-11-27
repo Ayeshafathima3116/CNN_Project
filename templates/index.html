@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card" style="text-align: center; padding: 50px;">
+    <h1 style="color: var(--accent-green); margin-bottom: 20px;">CONVOLUTIONAL NEURAL NETWORKS IN MOTION</h1>
+    <h2 style="margin-bottom: 30px;">AUTOMATING PASSENGER IDENTIFICATION AT TERRESTRIAL TERMINALS</h2>
+    <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px;">
+        Enhanced public safety through rapid identification of individuals using InsightFace and YOLOv8.
+    </p>
+    <div style="display: flex; justify-content: center; gap: 20px;">
+        <a href="{{ url_for('admin_login') }}" class="btn btn-primary">Admin Portal</a>
+        <a href="{{ url_for('operator_login') }}" class="btn btn-secondary">Operator Portal</a>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 40px;">
+    <div class="card">
+        <h3>Real-Time Detection</h3>
+        <p>Using YOLOv8 for high-precision people tracking in complex environments.</p>
+    </div>
+    <div class="card">
+        <h3>Facial Recognition</h3>
+        <p>InsightFace model achieving 97.53% precision and 100% recall.</p>
+    </div>
+    <div class="card">
+        <h3>Proactive Alerts</h3>
+        <p>Immediate notification to law enforcement upon positive identification.</p>
+    </div>
+</div>
+{% endblock %}

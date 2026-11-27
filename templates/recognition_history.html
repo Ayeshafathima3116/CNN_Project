@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card">
+    <h2 style="margin-bottom: 24px;">Recognition History</h2>
+    
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                <th style="padding: 12px;">Timestamp</th>
+                <th style="padding: 12px;">Name</th>
+                <th style="padding: 12px;">PID</th>
+                <th style="padding: 12px;">Warrant Status</th>
+                <th style="padding: 12px;">Captured Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for h in history %}
+            <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 12px;">{{ h.timestamp }}</td>
+                <td style="padding: 12px;">{{ h.name }}</td>
+                <td style="padding: 12px;">{{ h.passenger_id }}</td>
+                <td style="padding: 12px;">
+                    {% if h.status == 'Wanted' %}
+                        <span class="badge badge-error">Wanted</span>
+                    {% else %}
+                        <span class="badge badge-success">Clear</span>
+                    {% endif %}
+                </td>
+                <td style="padding: 12px;">
+                    {% if h.image_path %}
+                        <a href="{{ url_for('static', filename='detected/' + h.image_path) }}" target="_blank" style="color: var(--accent-blue);">View Image</a>
+                    {% else %}
+                        No Image
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            {% if not history %}
+            <tr>
+                <td colspan="5" style="padding: 20px; text-align: center; color: var(--text-dark-gray);">No recognition records found.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

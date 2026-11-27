@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2 style="margin-bottom: 24px;">Operator Dashboard</h2>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+    <div class="card" style="text-align: center;">
+        <h3 style="color: var(--accent-blue);">Passenger Search</h3>
+        <p>Search for passenger details by ID.</p>
+        <div style="margin-top: 16px;">
+            <a href="{{ url_for('search_passenger') }}" class="btn btn-secondary">Search Now</a>
+        </div>
+    </div>
+
+    <div class="card" style="text-align: center;">
+        <h3 style="color: var(--error-color);">Live Surveillance</h3>
+        <p>Start facial recognition camera feed.</p>
+        <div style="margin-top: 16px;">
+            <a href="{{ url_for('surveillance') }}" class="btn btn-danger">Start Camera</a>
+        </div>
+    </div>
+
+    <div class="card" style="text-align: center;">
+        <h3 style="color: var(--accent-green);">Detection History</h3>
+        <p>View recently identified passengers.</p>
+        <div style="margin-top: 16px;">
+            <a href="{{ url_for('recognition_history') }}" class="btn btn-outline">View History</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

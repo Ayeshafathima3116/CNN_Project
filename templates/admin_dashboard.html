@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2 style="margin-bottom: 24px;">Admin Dashboard</h2>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+    <div class="card" style="text-align: center;">
+        <h3>Passenger Management</h3>
+        <p>Add and manage passenger records.</p>
+        <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 10px;">
+            <a href="{{ url_for('add_passenger') }}" class="btn btn-primary">Add Passenger</a>
+            <a href="{{ url_for('view_passengers') }}" class="btn btn-outline">View Passengers</a>
+        </div>
+    </div>
+
+    <div class="card" style="text-align: center;">
+        <h3>Model Training</h3>
+        <p>Train the CNN and YOLOv8 models.</p>
+        <div style="margin-top: 16px;">
+            <a href="{{ url_for('train_model') }}" class="btn btn-secondary">Train Now</a>
+        </div>
+    </div>
+
+    <div class="card" style="text-align: center;">
+        <h3>System Analytics</h3>
+        <p>View model performance metrics.</p>
+        <div style="margin-top: 16px;">
+            <a href="{{ url_for('performance_metrics') }}" class="btn btn-outline">View Metrics</a>
+        </div>
+    </div>
+
+    <div class="card" style="text-align: center;">
+        <h3>User Management</h3>
+        <p>View registered operators.</p>
+        <div style="margin-top: 16px;">
+            <a href="{{ url_for('view_operators') }}" class="btn btn-outline">View Operators</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

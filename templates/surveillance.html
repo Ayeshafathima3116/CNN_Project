@@ -1,0 +1,181 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<style>
+  .surv-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 40px;
+  }
+
+  .surv-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 900px;
+  }
+
+  .surv-header h2 {
+    margin: 0;
+    font-size: 1.6rem;
+  }
+
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255, 50, 50, 0.15);
+    border: 1px solid rgba(255, 60, 60, 0.4);
+    color: #ff4444;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    animation: pulse-badge 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-badge {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.55; }
+  }
+
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ff4444;
+  }
+
+  /* Camera frame */
+  .camera-card {
+    position: relative;
+    background: #0a0a0f;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 900px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  }
+
+  .camera-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 400px;
+    object-fit: contain;
+    background: #0a0a0f;
+  }
+
+  /* Scan-line overlay for "surveillance" feel */
+  .camera-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.06) 2px,
+      rgba(0,0,0,0.06) 4px
+    );
+    pointer-events: none;
+  }
+
+  .corner { position: absolute; width: 22px; height: 22px; z-index: 5; }
+  .corner-tl { top: 12px; left: 12px; border-top: 2px solid #00e676; border-left: 2px solid #00e676; }
+  .corner-tr { top: 12px; right: 12px; border-top: 2px solid #00e676; border-right: 2px solid #00e676; }
+  .corner-bl { bottom: 12px; left: 12px; border-bottom: 2px solid #00e676; border-left: 2px solid #00e676; }
+  .corner-br { bottom: 12px; right: 12px; border-bottom: 2px solid #00e676; border-right: 2px solid #00e676; }
+
+  /* Action bar */
+  .action-bar {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 20px;
+    font-size: 0.82rem;
+    color: var(--text-dark-gray, #888);
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-box  { width: 14px; height: 14px; border-radius: 3px; }
+  .legend-green { background: #00c853; }
+  .legend-red   { background: #f44336; }
+</style>
+
+<div class="surv-wrapper">
+
+  <!-- Header -->
+  <div class="surv-header">
+    <h2>🎥 Live Surveillance</h2>
+    <span class="live-badge">
+      <span class="live-dot"></span> Live
+    </span>
+  </div>
+
+  <!-- Camera stream card -->
+  <div class="camera-card" id="camera-card">
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <img id="video-stream"
+         src="{{ url_for('video_feed') }}"
+         alt="Live webcam feed with face recognition"
+         onerror="handleStreamError()" />
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-box legend-green"></div>
+      <span>Known Passenger</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-box legend-red"></div>
+      <span>Unknown / Unregistered</span>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="action-bar">
+    <a href="{{ url_for('operator_dashboard') }}" class="btn btn-secondary">← Back to Dashboard</a>
+    <a href="{{ url_for('recognition_history') }}" class="btn btn-outline">View Detection History</a>
+    <button id="stop-btn" class="btn btn-danger" onclick="stopStream()">⏹ Stop Stream</button>
+  </div>
+
+</div>
+
+<script>
+  function stopStream() {
+    const img = document.getElementById('video-stream');
+    img.src = '';
+    document.getElementById('stop-btn').disabled = true;
+    document.getElementById('stop-btn').textContent = '⏹ Stream Stopped';
+
+    // Replace stream with a dark placeholder
+    const card = document.getElementById('camera-card');
+    const placeholder = document.createElement('div');
+    placeholder.style.cssText = 'width:100%;min-height:400px;background:#0a0a0f;display:flex;align-items:center;justify-content:center;color:#555;font-size:1.1rem;';
+    placeholder.textContent = 'Stream stopped. Reload page to restart.';
+    card.replaceChild(placeholder, img);
+  }
+
+  function handleStreamError() {
+    console.warn('Video stream error — webcam may be unavailable or model not loaded.');
+  }
+</script>
+
+{% endblock %}

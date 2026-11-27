@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card">
+    <h2 style="margin-bottom: 24px;">Registered Operators</h2>
+    
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                <th style="padding: 12px;">ID</th>
+                <th style="padding: 12px;">Full Name</th>
+                <th style="padding: 12px;">Username</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for op in operators %}
+            <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 12px;">{{ op.id }}</td>
+                <td style="padding: 12px;">{{ op.name }}</td>
+                <td style="padding: 12px;">{{ op.username }}</td>
+            </tr>
+            {% endfor %}
+            {% if not operators %}
+            <tr>
+                <td colspan="3" style="padding: 20px; text-align: center; color: var(--text-dark-gray);">No operators registered.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    <div style="margin-top: 20px;">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

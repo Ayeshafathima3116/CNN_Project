@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h2>Passenger Records</h2>
+        <a href="{{ url_for('add_passenger') }}" class="btn btn-sm btn-primary">Add New</a>
+    </div>
+    
+    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+        <thead>
+            <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                <th style="padding: 12px;">PID</th>
+                <th style="padding: 12px;">Name</th>
+                <th style="padding: 12px;">Age</th>
+                <th style="padding: 12px;">Status</th>
+                <th style="padding: 12px;">Contact</th>
+                <th style="padding: 12px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in passengers %}
+            <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 12px;">{{ p.pid }}</td>
+                <td style="padding: 12px;">{{ p.name }}</td>
+                <td style="padding: 12px;">{{ p.age }}</td>
+                <td style="padding: 12px;">
+                    {% if p.status == 'Wanted' %}
+                        <span class="badge badge-error">Wanted</span>
+                    {% else %}
+                        <span class="badge badge-success">Clear</span>
+                    {% endif %}
+                </td>
+                <td style="padding: 12px;">{{ p.contact }}</td>
+                <td style="padding: 12px;">
+                    <a href="{{ url_for('add_photos', pid=p.pid) }}" class="btn btn-sm btn-secondary">Add Photos</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

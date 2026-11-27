@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="card">
+        <h2 style="margin-bottom: 24px; color: var(--accent-blue);">Search Passenger</h2>
+        <form action="{{ url_for('search_passenger') }}" method="post" style="display: flex; gap: 10px; margin-bottom: 30px;">
+            <input type="text" name="pid" class="form-input" placeholder="Enter Passenger ID" required>
+            <button type="submit" class="btn btn-secondary">Search</button>
+        </form>
+
+        {% if passenger %}
+        <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
+            <h3 style="margin-bottom: 16px;">Passenger Details</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <p><strong>Name:</strong> {{ passenger.name }}</p>
+                <p><strong>PID:</strong> {{ passenger.pid }}</p>
+                <p><strong>Age:</strong> {{ passenger.age }}</p>
+                <p><strong>Gender:</strong> {{ passenger.gender }}</p>
+                <p><strong>Contact:</strong> {{ passenger.contact }}</p>
+                <p><strong>NID:</strong> {{ passenger.nid }}</p>
+                <p><strong>Status:</strong> 
+                    {% if passenger.status == 'Wanted' %}
+                        <span class="badge badge-error">Wanted</span>
+                    {% else %}
+                        <span class="badge badge-success">Clear</span>
+                    {% endif %}
+                </p>
+            </div>
+            <p style="margin-top: 10px;"><strong>Address:</strong> {{ passenger.address }}</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
